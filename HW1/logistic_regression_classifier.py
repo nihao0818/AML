@@ -6,7 +6,7 @@ num_train = 1555
 num_test = 173
 total = 1728
 num_of_features = 6
-bias_term = 0
+bias_term = 0.5
 alpha = 0.01
 threshold = 0.01
 
@@ -52,28 +52,28 @@ if __name__ == '__main__':
 
 
 	f = open('remappered.data')
-	while True:
-		old = theta[:]
-		f.seek(0)
-		count = 1
-		for line in f:
-			# print theta
-			words = line.split(',')
-			if count not in testset:
-				if words[6].strip('\n')=='1':
-					y = 0
-				else:
-					y = 1
+	old = theta[:]
+	f.seek(0)
+	count = 1
+	for line in f:
+		# print theta
+		words = line.split(',')
+		if count not in testset:
+			if words[6].strip('\n')=='1':
+				y = 0
+			else:
+				y = 1
 
-				for i in range(0,num_of_features):
-					x[i] = float(words[i])
-				
-				for i in range(0,num_of_features):
-					theta[i] = theta[i] + alpha*(y-hypothesis(theta,x))*x[i]
+			for i in range(0,num_of_features):
+				x[i] = float(words[i])
+			
+			for i in range(0,num_of_features):
+				theta[i] = theta[i] + alpha*(y-hypothesis(theta,x))*x[i]
 
-			count += 1
+		count += 1
 
 		if two_norm_distance(old,theta) < threshold:
+			print '!'
 			break
 
 	# print theta
